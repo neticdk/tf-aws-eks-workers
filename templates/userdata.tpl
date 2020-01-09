@@ -5,7 +5,7 @@ set -o xtrace
 
 enable_cloudwatch="${var.enable_cloudwatch}"
 
-if [ "$enable_cloudwatch" = true ]; then
+if [ "$enable_cloudwatch" = "true" ]; then
 # Install Cloudwatch Agent
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
 rpm -U ./amazon-cloudwatch-agent.rpm
