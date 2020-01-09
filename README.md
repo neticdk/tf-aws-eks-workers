@@ -64,6 +64,7 @@ module "eks_workers" {
 | elastic\_gpu\_specifications | Specifications of Elastic GPU to attach to the instances | list | `<list>` | no |
 | enable\_monitoring | Enable/disable detailed monitoring | string | `"true"` | no |
 | enabled\_metrics | A list of metrics to collect. The allowed values are `GroupMinSize`, `GroupMaxSize`, `GroupDesiredCapacity`, `GroupInServiceInstances`, `GroupPendingInstances`, `GroupStandbyInstances`, `GroupTerminatingInstances`, `GroupTotalInstances` | list | `<list>` | no |
+| enabled\_cloudwatch | Enable/disable installation of CloudWatch Agent | string | `false` | no |
 | force\_delete | Allows deleting the autoscaling group without waiting for all instances in the pool to terminate. You can force an autoscaling group to delete even if it's in the process of scaling a resource. Normally, Terraform drains all the instances before deleting the group. This bypasses that behavior and potentially leaves resources dangling | string | `"false"` | no |
 | health\_check\_grace\_period | Time (in seconds) after instance comes into service before checking health | string | `"300"` | no |
 | health\_check\_type | Controls how health checking is done. Valid values are `EC2` or `ELB` | string | `"EC2"` | no |

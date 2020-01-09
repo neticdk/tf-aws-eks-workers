@@ -14,6 +14,7 @@ data "template_file" "userdata" {
     cluster_name               = var.cluster_name
     kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
+    enable_cloudwatch	       = var.enable_cloudwatch
   }
 }
 

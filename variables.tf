@@ -310,3 +310,8 @@ variable "spot_max_price" {
   default     = ""
 }
 
+variable "enable_cloudwatch" {
+  description = "Enable CloudWatch Agent installation"
+  default     = false
+}
+
