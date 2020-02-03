@@ -121,7 +121,7 @@ resource "aws_launch_template" "this" {
     name = var.instance_profile_name
   }
 
-  image_id = join("", data.aws_ami.this.*.id)
+  image_id = local.ami_id
 
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
 

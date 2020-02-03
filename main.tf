@@ -6,6 +6,8 @@
  */
 
 locals {
+  ami_id = var.ami_id == "" ? data.aws_ami.this.id : var.ami_id
+
   tags = {
     Terraform = "true"
   }
