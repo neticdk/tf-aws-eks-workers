@@ -315,3 +315,8 @@ variable "enable_cloudwatch" {
   default     = false
 }
 
+variable "ami_id" {
+  description = "AMI id to use with EKS worker nodes"
+  type        = string
+  default     = null
+}
