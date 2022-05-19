@@ -42,6 +42,11 @@ variable "bootstrap_extra_args" {
   default     = ""
 }
 
+variable "container_runtime" {
+  description = "Argument passed to define containerruntime"
+  default     = "docker"
+}
+
 // VPC
 variable "vpc_id" {
   description = "VPC ID"
