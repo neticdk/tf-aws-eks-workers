@@ -14,7 +14,7 @@ data "template_file" "userdata" {
     cluster_name               = var.cluster_name
     kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
-    enable_cloudwatch	       = var.enable_cloudwatch
+    enable_cloudwatch          = var.enable_cloudwatch
   }
 }
 
@@ -69,11 +69,11 @@ resource "aws_autoscaling_group" "this" {
   service_linked_role_arn   = var.service_linked_role_arn
 
   tags = concat(
-    list(
-      map("key", "Name", "value", "eks-workers-${var.cluster_name}", "propagate_at_launch", true),
-      map("key", "kubernetes.io/cluster/${var.cluster_name}", "value", "owned", "propagate_at_launch", true),
-      map("key", "k8s.io/cluster-autoscaler/${var.autoscaling_enabled ? "enabled" : "disabled"}", "value", "true", "propagate_at_launch", false)
-    ),
+    tolist([
+      { "key" = "Name", "value" = "eks-workers-${var.cluster_name}", "propagate_at_launch" = true },
+      { "key" = "kubernetes.io/cluster/${var.cluster_name}", "value" = "owned", "propagate_at_launch" = true },
+      { "key" = "k8s.io/cluster-autoscaler/${var.autoscaling_enabled ? "enabled" : "disabled"}", "value" = "true", "propagate_at_launch" = false }
+    ]),
   data.null_data_source.tags_as_list_of_maps.*.outputs)
 
   lifecycle {
