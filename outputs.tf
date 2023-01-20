@@ -7,6 +7,6 @@
 
 output "security_group_id" {
   description = "ID of security group for the workers"
-  value       = aws_security_group.this[0].id
+  value       = aws_security_group.this.id
 }
 
