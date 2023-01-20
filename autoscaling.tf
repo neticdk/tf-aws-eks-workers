@@ -68,13 +68,14 @@ resource "aws_autoscaling_group" "this" {
   protect_from_scale_in     = var.protect_from_scale_in
   service_linked_role_arn   = var.service_linked_role_arn
 
-  tags = concat(
-    tolist([
-      { "key" = "Name", "value" = "eks-workers-${var.cluster_name}", "propagate_at_launch" = true },
-      { "key" = "kubernetes.io/cluster/${var.cluster_name}", "value" = "owned", "propagate_at_launch" = true },
-      { "key" = "k8s.io/cluster-autoscaler/${var.autoscaling_enabled ? "enabled" : "disabled"}", "value" = "true", "propagate_at_launch" = false }
-    ]),
-  data.null_data_source.tags_as_list_of_maps.*.outputs)
+  dynamic "tag" {
+    for_each = local.eks_tags
+    content {
+      key = tag.key
+      value = tag.value
+      propagate_at_launch = true
+    }
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -162,15 +163,5 @@ resource "aws_launch_template" "this" {
 
   lifecycle {
     create_before_destroy = true
-  }
-}
-
-data "null_data_source" "tags_as_list_of_maps" {
-  count = length(keys(local.all_tags))
-
-  inputs = {
-    "key"                 = element(keys(local.all_tags), count.index)
-    "value"               = element(values(local.all_tags), count.index)
-    "propagate_at_launch" = true
   }
 }
