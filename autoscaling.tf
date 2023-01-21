@@ -36,7 +36,7 @@ resource "aws_autoscaling_group" "this" {
 
     launch_template {
       launch_template_specification {
-        launch_template_id = join("", aws_launch_template.this.*.id)
+        launch_template_id = join("", aws_launch_template.this[*].id)
         version            = "$Latest"
       }
 
@@ -143,7 +143,7 @@ resource "aws_launch_template" "this" {
 
   network_interfaces {
     associate_public_ip_address = var.associate_public_ip_address
-    security_groups             = [join("", aws_security_group.this.*.id)]
+    security_groups             = [join("", aws_security_group.this[*].id)]
     delete_on_termination       = true
   }
 
@@ -151,7 +151,7 @@ resource "aws_launch_template" "this" {
     tenancy = var.placement_tenancy
   }
 
-  user_data = base64encode(join("", data.template_file.userdata.*.rendered))
+  user_data = base64encode(join("", data.template_file.userdata[*].rendered))
 
   tags = merge(
     {

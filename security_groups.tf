@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "egress" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = join("", aws_security_group.this.*.id)
+  security_group_id = join("", aws_security_group.this[*].id)
   type              = "egress"
 }
 
@@ -39,8 +39,8 @@ resource "aws_security_group_rule" "ingress_self" {
   from_port                = 0
   to_port                  = 65535
   protocol                 = "-1"
-  security_group_id        = join("", aws_security_group.this.*.id)
-  source_security_group_id = join("", aws_security_group.this.*.id)
+  security_group_id        = join("", aws_security_group.this[*].id)
+  source_security_group_id = join("", aws_security_group.this[*].id)
   type                     = "ingress"
 }
 
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "ingress_cluster" {
   from_port                = 1025
   to_port                  = 65535
   protocol                 = "tcp"
-  security_group_id        = join("", aws_security_group.this.*.id)
+  security_group_id        = join("", aws_security_group.this[*].id)
   source_security_group_id = var.cluster_security_group_id
   type                     = "ingress"
 }
@@ -59,7 +59,7 @@ resource "aws_security_group_rule" "workers_ingress_cluster_https" {
   protocol                 = "tcp"
   from_port                = 443
   to_port                  = 443
-  security_group_id        = join("", aws_security_group.this.*.id)
+  security_group_id        = join("", aws_security_group.this[*].id)
   source_security_group_id = var.cluster_security_group_id
   type                     = "ingress"
 }
@@ -70,7 +70,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   from_port                = 0
   to_port                  = 65535
   protocol                 = "-1"
-  security_group_id        = join("", aws_security_group.this.*.id)
+  security_group_id        = join("", aws_security_group.this[*].id)
   source_security_group_id = element(var.allowed_security_groups, count.index)
   type                     = "ingress"
 }
@@ -82,6 +82,6 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = var.allowed_cidr_blocks
-  security_group_id = join("", aws_security_group.this.*.id)
+  security_group_id = join("", aws_security_group.this[*].id)
   type              = "ingress"
 }
