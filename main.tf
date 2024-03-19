@@ -13,6 +13,18 @@ locals {
   }
 
   all_tags = merge(var.tags, local.tags)
+
+  eks_tags = merge(
+    local.all_tags,
+    {
+      "Name" = "eks-workers-${var.cluster_name}"
+      "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+    },
+    var.autoscaling_enabled ? {
+      "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
+      "k8s.io/cluster-autoscaler/enabled"             = "true"
+    } : {},
+  )
 }
 
 data "aws_ami" "this" {
