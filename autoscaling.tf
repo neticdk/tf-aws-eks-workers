@@ -5,19 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-data "template_file" "userdata" {
-  template = file("${path.module}/templates/userdata.tpl")
-
-  vars = {
-    cluster_endpoint           = var.cluster_endpoint
-    certificate_authority_data = var.cluster_certificate_authority_data
-    cluster_name               = var.cluster_name
-    kubelet_extra_args         = var.kubelet_extra_args
-    bootstrap_extra_args       = var.bootstrap_extra_args
-    enable_cloudwatch          = var.enable_cloudwatch
-  }
-}
-
 resource "aws_autoscaling_group" "this" {
   name_prefix      = "eks-workers-${var.name}-"
   max_size         = var.max_size
@@ -151,7 +138,7 @@ resource "aws_launch_template" "this" {
     tenancy = var.placement_tenancy
   }
 
-  user_data = base64encode(join("", data.template_file.userdata[*].rendered))
+  user_data = base64encode(local.userdata)
 
   tags = merge(
     {
