@@ -13,6 +13,27 @@ locals {
   }
 
   all_tags = merge(var.tags, local.tags)
+
+  eks_tags = merge(
+    local.all_tags,
+    {
+      "Name" = "eks-workers-${var.cluster_name}"
+      "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+    },
+    var.autoscaling_enabled ? {
+      "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
+      "k8s.io/cluster-autoscaler/enabled"             = "true"
+    } : {},
+  )
+  userdata = templatefile("${path.module}/templates/userdata.tpl",
+  {
+    cluster_endpoint           = var.cluster_endpoint
+    certificate_authority_data = var.cluster_certificate_authority_data
+    cluster_name               = var.cluster_name
+    kubelet_extra_args         = var.kubelet_extra_args
+    bootstrap_extra_args       = var.bootstrap_extra_args
+    enable_cloudwatch          = var.enable_cloudwatch
+  })
 }
 
 data "aws_ami" "this" {
