@@ -22,6 +22,7 @@ EOF
 /usr/bin/nodeadm init --config-source file:/root/nodeadm.json | tee /root/nodeadm.json.log
 
 # config Cloudwatch Agent
+mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
 {
   "metrics": {
