@@ -19,7 +19,7 @@ tee /root/nodeadm.json > /dev/null <<EOF
 EOF
 
 # Initializes of the worker node
-/usr/bin/nodeadm init --config-source file:/tmp/nodeadm.json
+/usr/bin/nodeadm init --config-source file:/root/nodeadm.json | tee /root/nodeadm.json.log
 
 # config Cloudwatch Agent
 cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
