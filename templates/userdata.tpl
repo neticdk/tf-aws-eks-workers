@@ -19,9 +19,12 @@ tee /root/nodeadm.json > /dev/null <<EOF
 EOF
 
 # Initializes of the worker node
-/usr/bin/nodeadm init --config-source file:/root/nodeadm.json | tee /root/nodeadm.json.log
+/usr/bin/nodeadm init --config-source file:/root/nodeadm.json
+
+dnf install amazon-cloudwatch-agent -y
 
 # config Cloudwatch Agent
+dnf install amazon-cloudwatch-agent -y
 mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
 {
@@ -39,5 +42,5 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
   }
 }
 EOF
-/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+/usr/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
 fi
