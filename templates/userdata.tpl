@@ -1,13 +1,27 @@
 #!/bin/bash
 set -o xtrace
 
-/etc/eks/bootstrap.sh --apiserver-endpoint '${cluster_endpoint}' --b64-cluster-ca '${certificate_authority_data}' ${bootstrap_extra_args} --kubelet-extra-args '${kubelet_extra_args}' '${cluster_name}'
+# Initializes nodeadm.json
+tee /root/nodeadm.json > /dev/null <<EOF
+{
+  "apiVersion": "node.eks.aws/v1alpha1",
+  "kind": "NodeConfig",
+  "spec": {
+    "cluster": {
+      "name": "${cluster_name}",
+      "apiServerEndpoint": "${cluster_endpoint}",
+      "certificateAuthority": "${certificate_authority_data}",
+      "cidr": "${vpc_cidr}"
+    },
+    "kubeletExtraArgs": "${kubelet_extra_args}"
+  }
+}
+EOF
 
-if [ "${enable_cloudwatch}" == "true" ]; then
-# Install Cloudwatch Agent
-wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
-rpm -U ./amazon-cloudwatch-agent.rpm
-rm amazon-cloudwatch-agent.rpm
+# Initializes of the worker node
+/usr/bin/nodeadm init --config-source file:/tmp/nodeadm.json
+
+# config Cloudwatch Agent
 cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
 {
   "metrics": {

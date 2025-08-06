@@ -33,6 +33,7 @@ locals {
     kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
+    vpc_cidr                   = var.vpc_cidr
   })
 }
 

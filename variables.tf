@@ -50,6 +50,12 @@ variable "bootstrap_extra_args" {
   default     = ""
 }
 
+variable "vpc_cidr" {
+  description = "vpc cidr"
+  type        = string
+  default     = ""
+}
+
 // VPC
 variable "vpc_id" {
   description = "VPC ID"
