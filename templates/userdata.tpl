@@ -37,7 +37,7 @@ tee /root/nodeadm.json > /dev/null <<EOF
       "name": "${cluster_name}",
       "apiServerEndpoint": "${cluster_endpoint}",
       "certificateAuthority": "${certificate_authority_data}",
-      "cidr": "${vpc_cidr}"
+      "cidr": "${eks_cluster-ip-range}"
     },
     "kubelet": {
       "extraArgs":"${kubelet_extra_args}"
