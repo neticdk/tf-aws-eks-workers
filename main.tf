@@ -6,6 +6,10 @@
  */
 
 locals {
+  # Convert kubelet_extra_args string to flags list and JSON for nodeadm
+  kubelet_flags_list = split(" ", var.kubelet_extra_args)
+  kubelet_flags_json = jsonencode(local.kubelet_flags_list)
+
   ami_id = var.ami_id == "" ? data.aws_ami.this.id : var.ami_id
 
   tags = {
@@ -25,10 +29,6 @@ locals {
       "k8s.io/cluster-autoscaler/enabled"             = "true"
     } : {},
   )
-
-# Convert kubelet_extra_args string to flags list and JSON for nodeadm
-  kubelet_flags_list = split(" ", var.kubelet_extra_args)
-  kubelet_flags_json = jsonencode(local.kubelet_flags_list)
 
   userdata = templatefile("${path.module}/templates/userdata.tpl",
   {
