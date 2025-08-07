@@ -34,7 +34,7 @@ locals {
     kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
-    eks_cluster-ip-range       = var.eks_cluster-ip-range
+    eks_cluster_ip_range       = var.eks_cluster_ip_range
   })
 }
 

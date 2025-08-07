@@ -56,7 +56,7 @@ variable "vpc_cidr" {
   default     = ""
 }
 
-variable "eks_cluster-ip-range" {
+variable "eks_cluster_ip_range" {
   description = "CIDR block from which Kubernetes allocates ClusterIP addresses for services"
   type        = string
   default     = ""
