@@ -13,7 +13,9 @@ tee /root/nodeadm.json > /dev/null <<EOF
       "certificateAuthority": "${certificate_authority_data}",
       "cidr": "${vpc_cidr}"
     },
-    "kubeletExtraArgs": "${kubelet_extra_args}"
+    "kubelet": {
+      "extraArgs":"${kubelet_extra_args}"
+    }
   }
 }
 EOF
