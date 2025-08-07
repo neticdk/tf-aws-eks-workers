@@ -25,12 +25,17 @@ locals {
       "k8s.io/cluster-autoscaler/enabled"             = "true"
     } : {},
   )
+
+# Convert kubelet_extra_args string to flags list and JSON for nodeadm
+  kubelet_flags_list = split(" ", var.kubelet_extra_args)
+  kubelet_flags_json = jsonencode(local.kubelet_flags_list)
+
   userdata = templatefile("${path.module}/templates/userdata.tpl",
   {
     cluster_endpoint           = var.cluster_endpoint
     certificate_authority_data = var.cluster_certificate_authority_data
     cluster_name               = var.cluster_name
-    kubelet_extra_args         = var.kubelet_extra_args
+    kubelet_extra_args         = local.kubelet_flags_json
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
     vpc_cidr                   = var.vpc_cidr
