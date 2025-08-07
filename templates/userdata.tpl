@@ -40,7 +40,7 @@ tee /root/nodeadm.json > /dev/null <<EOF
       "cidr": "${vpc_cidr}"
     },
     "kubelet": {
-      "flags": ${kubelet_flags_json}
+      "extraArgs":"${kubelet_extra_args}"
     }
   }
 }
