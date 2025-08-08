@@ -24,9 +24,7 @@ locals {
     } : {},
   )
 
-  # JSON-encode the list for the JSON template
-  kubelet_flags_json = jsonencode(var.kubelet_extra_args)
-
+  # Render user-data with YAML nodeadm config; pass raw list for kubelet flags
   userdata = templatefile("${path.module}/templates/userdata.tpl", {
     cluster_endpoint           = var.cluster_endpoint
     certificate_authority_data = var.cluster_certificate_authority_data
@@ -35,8 +33,8 @@ locals {
     enable_cloudwatch          = var.enable_cloudwatch
     eks_cluster_ip_range       = var.eks_cluster_ip_range
 
-    # pass what the template references
-    kubelet_flags_json         = local.kubelet_flags_json
+    # <<-- used by the YAML loop in userdata.tpl
+    kubelet_extra_args         = var.kubelet_extra_args
   })
 }
 
