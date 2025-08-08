@@ -39,8 +39,9 @@ variable "cluster_version" {
 
 // Userdata
 variable "kubelet_extra_args" {
-  description = "Passed to the bootstrap.sh script to enable --kublet-extra-args or --use-max-pods."
-  type        = string
+  description = "Passed to the to enable --kublet-extra-args or --use-max-pods."
+  # change from AL2 to AL2023
+  type = list(string)
   default     = ""
 }
 
