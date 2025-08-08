@@ -33,10 +33,10 @@ locals {
     cluster_endpoint           = var.cluster_endpoint
     certificate_authority_data = var.cluster_certificate_authority_data
     cluster_name               = var.cluster_name
-    kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
-    eks_cluster_ip_range       = local.eks_cluster_ip_range
+    eks_cluster_ip_range       = var.eks_cluster_ip_range
+    kubelet_flags_json         = local.kubelet_flags_json
   })
 }
 
