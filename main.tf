@@ -25,7 +25,9 @@ locals {
       "k8s.io/cluster-autoscaler/enabled"             = "true"
     } : {},
   )
-  
+  # encode list(string) -> JSON for the template
+  kubelet_flags_json = jsonencode(var.kubelet_extra_args)
+
   userdata = templatefile("${path.module}/templates/userdata.tpl",
   {
     cluster_endpoint           = var.cluster_endpoint
@@ -34,7 +36,7 @@ locals {
     kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
-    eks_cluster_ip_range       = var.eks_cluster_ip_range
+    eks_cluster_ip_range       = local.eks_cluster_ip_range
   })
 }
 
