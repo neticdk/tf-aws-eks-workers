@@ -1,10 +1,10 @@
 #!/bin/bash
 set -o xtrace
 
-# upgrade 
+# Upgrade base system
 dnf upgrade -y
 
-# install CloudWatch Agent
+# Install CloudWatch Agent
 dnf install amazon-cloudwatch-agent -y
 mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
@@ -23,10 +23,12 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
   }
 }
 EOF
+
+# Start CloudWatch Agent
 /usr/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 \
   -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
 
-# Initializes nodeadm.yaml
+# Initialize nodeadm.yaml
 tee /root/nodeadm.yaml > /dev/null <<EOF
 apiVersion: node.eks.aws/v1alpha1
 kind: NodeConfig
@@ -43,5 +45,5 @@ spec:
 %{ endfor ~}
 EOF
 
-# Initializes the worker node
+# Run nodeadm init
 /usr/bin/nodeadm init --config-source file:/root/nodeadm.yaml
