@@ -74,7 +74,7 @@ module "eks_workers" {
 | instance\_type | Instance type to launch | string | `"m5.large"` | no |
 | kernel\_id | The kernel ID | string | `""` | no |
 | key\_name | SSH key name that should be used for the instance | string | `""` | no |
-| kubelet\_extra\_args | Passed to the bootstrap.sh script to enable --kublet-extra-args or --use-max-pods. | string | `""` | no |
+| kubelet\_extra\_args | Passed to the bootstrap.sh script to enable --kublet-extra-args or --use-max-pods. | list(string) | `""` | no |
 | load\_balancers | A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use `target_group_arns` instead | list | `<list>` | no |
 | max\_size | The maximum size of the autoscale group | string | `"1"` | no |
 | metrics\_granularity | The granularity to associate with the metrics to collect. The only valid value is 1Minute | string | `"1Minute"` | no |
