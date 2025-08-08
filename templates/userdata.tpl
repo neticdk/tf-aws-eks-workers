@@ -40,7 +40,7 @@ tee /root/nodeadm.json > /dev/null <<EOF
       "cidr": "${eks_cluster_ip_range}"
     },
     "kubelet": {
-      "flags": {kubelet_flags_json}
+      "flags": ${kubelet_flags_json}
     }
   }
 }
