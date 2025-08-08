@@ -1,9 +1,6 @@
 #!/bin/bash
 set -o xtrace
 
-# Upgrade base system
-dnf upgrade -y
-
 # Install CloudWatch Agent
 dnf install amazon-cloudwatch-agent -y
 mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
@@ -23,6 +20,13 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
   }
 }
 EOF
+
+# enable swapfile
+fallocate -l 2G /.swapfile
+chmod 600 /.swapfile
+mkswap /.swapfile
+swapon /.swapfile
+echo '/.swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 # Start CloudWatch Agent
 /usr/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 \
