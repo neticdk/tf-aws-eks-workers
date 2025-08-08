@@ -39,10 +39,10 @@ variable "cluster_version" {
 
 // Userdata
 variable "kubelet_extra_args" {
-  description = "Passed to the to enable --kublet-extra-args or --use-max-pods."
+  description = "Kubelet flags (AL2023 nodeadm expects an array)"
   # change from AL2 to AL2023
   type = list(string)
-  default     = ""
+  default     = []
 }
 
 variable "bootstrap_extra_args" {
