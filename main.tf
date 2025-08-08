@@ -8,9 +8,7 @@
 locals {
   ami_id = var.ami_id == "" ? data.aws_ami.this.id : var.ami_id
 
-  tags = {
-    Terraform = "true"
-  }
+  tags = { Terraform = "true" }
 
   all_tags = merge(var.tags, local.tags)
 
@@ -26,7 +24,9 @@ locals {
     } : {},
   )
 
-  # Render user-data with YAML nodeadm config; pass raw list for kubelet flags
+  # JSON-encode the list for the JSON template
+  kubelet_flags_json = jsonencode(var.kubelet_extra_args)
+
   userdata = templatefile("${path.module}/templates/userdata.tpl", {
     cluster_endpoint           = var.cluster_endpoint
     certificate_authority_data = var.cluster_certificate_authority_data
@@ -34,7 +34,9 @@ locals {
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
     eks_cluster_ip_range       = var.eks_cluster_ip_range
-    kubelet_extra_args         = var.kubelet_extra_args  # list(string)
+
+    # pass what the template references
+    kubelet_flags_json         = local.kubelet_flags_json
   })
 }
 
