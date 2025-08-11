@@ -21,13 +21,6 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
 }
 EOF
 
-# enable swapfile
-fallocate -l 2G /.swapfile
-chmod 600 /.swapfile
-mkswap /.swapfile
-swapon /.swapfile
-echo '/.swapfile none swap sw 0 0' | tee -a /etc/fstab
-
 # Start CloudWatch Agent
 /usr/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 \
   -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
