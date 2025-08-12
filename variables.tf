@@ -39,13 +39,26 @@ variable "cluster_version" {
 
 // Userdata
 variable "kubelet_extra_args" {
-  description = "Passed to the bootstrap.sh script to enable --kublet-extra-args or --use-max-pods."
-  type        = string
-  default     = ""
+  description = "Kubelet flags (AL2023 nodeadm expects an array)"
+  # change from AL2 to AL2023
+  type = list(string)
+  default     = []
 }
 
 variable "bootstrap_extra_args" {
   description = "Extra arguments passed to the bootstrap.sh."
+  type        = string
+  default     = ""
+}
+
+variable "vpc_cidr" {
+  description = "vpc cidr"
+  type        = string
+  default     = ""
+}
+
+variable "eks_cluster_ip_range" {
+  description = "CIDR block from which Kubernetes allocates ClusterIP addresses for services"
   type        = string
   default     = ""
 }

@@ -8,9 +8,7 @@
 locals {
   ami_id = var.ami_id == "" ? data.aws_ami.this.id : var.ami_id
 
-  tags = {
-    Terraform = "true"
-  }
+  tags = { Terraform = "true" }
 
   all_tags = merge(var.tags, local.tags)
 
@@ -25,14 +23,18 @@ locals {
       "k8s.io/cluster-autoscaler/enabled"             = "true"
     } : {},
   )
-  userdata = templatefile("${path.module}/templates/userdata.tpl",
-  {
+
+  # Render user-data with YAML nodeadm config; pass raw list for kubelet flags
+  userdata = templatefile("${path.module}/templates/userdata.tpl", {
     cluster_endpoint           = var.cluster_endpoint
     certificate_authority_data = var.cluster_certificate_authority_data
     cluster_name               = var.cluster_name
-    kubelet_extra_args         = var.kubelet_extra_args
     bootstrap_extra_args       = var.bootstrap_extra_args
     enable_cloudwatch          = var.enable_cloudwatch
+    eks_cluster_ip_range       = var.eks_cluster_ip_range
+
+    # <<-- used by the YAML loop in userdata.tpl
+    kubelet_extra_args         = var.kubelet_extra_args
   })
 }
 
@@ -45,4 +47,3 @@ data "aws_ami" "this" {
   most_recent = true
   owners      = ["602401143452"] # Amazon
 }
-

@@ -27,7 +27,7 @@ module "eks_workers" {
   vpc_id                = module.vpc.vpd_id
   subnets               = module.vpc.private_subnets
 
-  cluster_version                    = "1.12"
+  cluster_version                    = "1.31"
   cluster_name                       = "my-eks-cluster"
   cluster_endpoint                   = module.eks_cluster.eks_cluster_endpoint
   cluster_certificate_authority_data = module.eks_cluster.eks_cluster_certificate_authority_data
@@ -74,7 +74,7 @@ module "eks_workers" {
 | instance\_type | Instance type to launch | string | `"m5.large"` | no |
 | kernel\_id | The kernel ID | string | `""` | no |
 | key\_name | SSH key name that should be used for the instance | string | `""` | no |
-| kubelet\_extra\_args | Passed to the bootstrap.sh script to enable --kublet-extra-args or --use-max-pods. | string | `""` | no |
+| kubelet\_extra\_args | Passed to the bootstrap.sh script to enable --kublet-extra-args or --use-max-pods. | list(string) | `""` | no |
 | load\_balancers | A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use `target_group_arns` instead | list | `<list>` | no |
 | max\_size | The maximum size of the autoscale group | string | `"1"` | no |
 | metrics\_granularity | The granularity to associate with the metrics to collect. The only valid value is 1Minute | string | `"1Minute"` | no |
