@@ -27,7 +27,7 @@ module "eks_workers" {
   vpc_id                = module.vpc.vpd_id
   subnets               = module.vpc.private_subnets
 
-  cluster_version                    = "1.12"
+  cluster_version                    = "1.31"
   cluster_name                       = "my-eks-cluster"
   cluster_endpoint                   = module.eks_cluster.eks_cluster_endpoint
   cluster_certificate_authority_data = module.eks_cluster.eks_cluster_certificate_authority_data
