@@ -41,7 +41,7 @@ locals {
 data "aws_ami" "this" {
   filter {
     name   = "name"
-    values = ["amazon-eks-node-${var.cluster_version}-v*"]
+    values = ["amazon-eks-node-*${var.cluster_version}-v*"]
   }
 
   most_recent = true
