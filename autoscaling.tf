@@ -5,19 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-data "template_file" "userdata" {
-  template = file("${path.module}/templates/userdata.tpl")
-
-  vars = {
-    cluster_endpoint           = var.cluster_endpoint
-    certificate_authority_data = var.cluster_certificate_authority_data
-    cluster_name               = var.cluster_name
-    kubelet_extra_args         = var.kubelet_extra_args
-    bootstrap_extra_args       = var.bootstrap_extra_args
-    enable_cloudwatch	       = var.enable_cloudwatch
-  }
-}
-
 resource "aws_autoscaling_group" "this" {
   name_prefix      = "eks-workers-${var.name}-"
   max_size         = var.max_size
@@ -36,7 +23,7 @@ resource "aws_autoscaling_group" "this" {
 
     launch_template {
       launch_template_specification {
-        launch_template_id = join("", aws_launch_template.this.*.id)
+        launch_template_id = join("", aws_launch_template.this[*].id)
         version            = "$Latest"
       }
 
@@ -68,13 +55,14 @@ resource "aws_autoscaling_group" "this" {
   protect_from_scale_in     = var.protect_from_scale_in
   service_linked_role_arn   = var.service_linked_role_arn
 
-  tags = concat(
-    list(
-      map("key", "Name", "value", "eks-workers-${var.cluster_name}", "propagate_at_launch", true),
-      map("key", "kubernetes.io/cluster/${var.cluster_name}", "value", "owned", "propagate_at_launch", true),
-      map("key", "k8s.io/cluster-autoscaler/${var.autoscaling_enabled ? "enabled" : "disabled"}", "value", "true", "propagate_at_launch", false)
-    ),
-  data.null_data_source.tags_as_list_of_maps.*.outputs)
+  dynamic "tag" {
+    for_each = local.eks_tags
+    content {
+      key = tag.key
+      value = tag.value
+      propagate_at_launch = true
+    }
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -142,7 +130,7 @@ resource "aws_launch_template" "this" {
 
   network_interfaces {
     associate_public_ip_address = var.associate_public_ip_address
-    security_groups             = [join("", aws_security_group.this.*.id)]
+    security_groups             = [join("", aws_security_group.this[*].id)]
     delete_on_termination       = true
   }
 
@@ -150,7 +138,7 @@ resource "aws_launch_template" "this" {
     tenancy = var.placement_tenancy
   }
 
-  user_data = base64encode(join("", data.template_file.userdata.*.rendered))
+  user_data = base64encode(local.userdata)
 
   tags = merge(
     {
@@ -162,15 +150,5 @@ resource "aws_launch_template" "this" {
 
   lifecycle {
     create_before_destroy = true
-  }
-}
-
-data "null_data_source" "tags_as_list_of_maps" {
-  count = length(keys(local.all_tags))
-
-  inputs = {
-    "key"                 = element(keys(local.all_tags), count.index)
-    "value"               = element(values(local.all_tags), count.index)
-    "propagate_at_launch" = true
   }
 }

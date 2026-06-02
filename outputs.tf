@@ -6,6 +6,11 @@
  */
 
 output "security_group_id" {
-  value = join("", aws_security_group.this.*.id)
+  description = "ID of security group for the workers"
+  value       = aws_security_group.this.id
 }
 
+output "autoscaling_group_name" {
+  description = "Name of autoscaling group for the workers"
+  value       = aws_autoscaling_group.this.name
+}
