@@ -14,3 +14,8 @@ output "autoscaling_group_name" {
   description = "Name of autoscaling group for the workers"
   value       = aws_autoscaling_group.this.name
 }
+
+output "rendered_userdata" {
+  description = "The rendered userdata string"
+  value       = local.userdata
+}
