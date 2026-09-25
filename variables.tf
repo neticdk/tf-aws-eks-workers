@@ -7,7 +7,7 @@
 
 variable "tags" {
   description = "A map of tags to add to all resources"
-  type        = map
+  type        = map(string)
   default     = {}
 }
 
@@ -161,7 +161,7 @@ variable "ebs_optimized" {
 
 variable "elastic_gpu_specifications" {
   description = "Specifications of Elastic GPU to attach to the instances"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -173,7 +173,7 @@ variable "instance_initiated_shutdown_behavior" {
 
 variable "instance_market_options" {
   description = "The market (purchasing) option for the instances"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
