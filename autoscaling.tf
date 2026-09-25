@@ -31,8 +31,11 @@ resource "aws_autoscaling_group" "this" {
         instance_type = var.instance_type
       }
 
-      override {
-        instance_type = var.override_instance_type
+      dynamic "override" {
+        for_each = var.override_instance_type == "" ? [] : [var.override_instance_type]
+        content {
+          instance_type = override.value
+        }
       }
     }
   }
