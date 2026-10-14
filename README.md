@@ -51,7 +51,7 @@ module "eks_workers" {
 | cluster\_name | EKS Cluster Name | string | n/a | yes |
 | cluster\_security\_group\_id | Security group ID of the EKS Cluster | string | n/a | yes |
 | cluster\_version | Cluster Version | string | n/a | yes |
-| credit\_specification | Customize the credit specification of the instances | list(string) | `<list>` | no |
+| credit\_specification | Customize the credit specification of the instances | list(any) | `<list>` | no |
 | default\_cooldown | The amount of time, in seconds, after a scaling activity completes before another scaling activity can start | number | `"300"` | no |
 | desired\_capacity | The desired size of the autoscale group | number | `"1"` | no |
 | disable\_api\_termination | If `true`, enables EC2 Instance Termination Protection | bool | `"false"` | no |

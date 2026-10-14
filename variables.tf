@@ -143,7 +143,7 @@ variable "ebs_kms_key_id" {
 
 variable "credit_specification" {
   description = "Customize the credit specification of the instances"
-  type        = list(string)
+  type        = list(any)
   default     = []
 }
 
