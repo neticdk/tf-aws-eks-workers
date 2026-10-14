@@ -97,7 +97,7 @@ resource "aws_launch_template" "this" {
   dynamic "credit_specification" {
     for_each = var.credit_specification
     content {
-      cpu_credits = credit_specification.cpu_credits
+      cpu_credits = credit_specification.value.cpu_credits
     }
   }
 
