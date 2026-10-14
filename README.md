@@ -61,7 +61,6 @@ module "eks_workers" {
 | ebs\_root\_iops | The amount of provisioned IOPS | string | `"0"` | no |
 | ebs\_root\_volume\_size | The size of the volume in gigabytes | string | `"100"` | no |
 | ebs\_root\_volume\_type | The type of volume | string | `"gp2"` | no |
-| elastic\_gpu\_specifications | Specifications of Elastic GPU to attach to the instances | list(any) | `<list>` | no |
 | enable\_monitoring | Enable/disable detailed monitoring | bool | `"true"` | no |
 | enabled\_metrics | A list of metrics to collect. The allowed values are `GroupMinSize`, `GroupMaxSize`, `GroupDesiredCapacity`, `GroupInServiceInstances`, `GroupPendingInstances`, `GroupStandbyInstances`, `GroupTerminatingInstances`, `GroupTotalInstances` | list(string) | `<list>` | no |
 | enable\_cloudwatch | Enable/disable installation of CloudWatch Agent | bool | `false` | no |

@@ -159,12 +159,6 @@ variable "ebs_optimized" {
   default     = false
 }
 
-variable "elastic_gpu_specifications" {
-  description = "Specifications of Elastic GPU to attach to the instances"
-  type        = list(any)
-  default     = []
-}
-
 variable "instance_initiated_shutdown_behavior" {
   description = "Shutdown behavior for the instances. Can be `stop` or `terminate`"
   type        = string
